@@ -724,7 +724,7 @@ double toyAgent::FitnessCalculation() {
 
     h_dist = CalculateHammingDistance();
     
-    if (h_dist!=-1 && h_dist!=0) return pow((1.0-static_cast<double>(h_dist) / (ncells * tmax))*0.8, 0.5);  
+    if (h_dist!=-1 && h_dist!=0) return pow((1.0-static_cast<double>(h_dist) / (ncells * tmax))*0.8, selection_strength);  
     else if (h_dist==0) return 1.;
     else return 0;
 

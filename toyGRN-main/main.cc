@@ -28,6 +28,9 @@ int Target = 0;
 bool well_mixing = false;
 int SimTime = default_SimTime;
 
+double selection_strength = 1; // parameter used in the fitness calculation function
+
+
 string genestate_init = genestate_file;
 string backup_reboot = backup_file;
 string anctrace_reboot = anctrace_file;
@@ -326,14 +329,14 @@ int main(int argc, char** argv) {
                 if(Time%TimePruneFossils==0 && Time!=0)	P->PruneFossilRecord();
                 if (Time%100==0){
                     P->Stats();
-                    if(P->MaxFitness>0.81) {
-                        cout << "Time: " << Time <<" Mean fitness: " << P->MeanFitness << " Max fitness: " << P->MaxFitness << " Size: " << P->size << endl;
+                    if(P->MaxFitness==1) {
+                        //cout << "Time: " << Time <<" Mean fitness: " << P->MeanFitness << " Max fitness: " << P->MaxFitness << " Size: " << P->size << endl;
                         break;
                     }
                 }
                 if (Time%50000==0){
                     P->Stats();
-                    cout << "Time: " << Time <<" Mean fitness: " << P->MeanFitness << " Max fitness: " << P->MaxFitness << " Size: " << P->size << endl;
+                    //cout << "Time: " << Time <<" Mean fitness: " << P->MeanFitness << " Max fitness: " << P->MaxFitness << " Size: " << P->size << endl;
                 } 
             
                 if (P->size==0) {
@@ -501,6 +504,13 @@ void Setup(int argc, char** argv) {
 			i++;
 			continue;
 		}
+		else if(ReadOut=="-ss" && (i+1)!=argc)
+		{
+			selection_strength = stod(argv[i+1]);
+			
+			i++;
+			continue;
+		}
 		else if(ReadOut=="--chrm")
 		{
 			chrom = true;
@@ -520,7 +530,7 @@ void Setup(int argc, char** argv) {
         else if(ReadOut=="--q")
 		{
             mode = "quickSim";
-			printf("Mode: genotype sample\n");
+			printf("Mode: quick simulations\n");
 			continue;
 		}
 		else if(ReadOut=="-N" && (i+1)!=argc)
@@ -571,7 +581,7 @@ void Setup(int argc, char** argv) {
 		}
 		else	//Print usage/help.
 		{
-			printf("\n\033[93m### Patterns --- usage ###\033[0m\nArgument options:\n\t-p [project title]\n\t-s [seed]\n\t-g [initial genome]\n\t-b [backup file]\n\t-a [ancestor file]\n\t-t [max. time]\n\t-tp [target pattern]\n\t--chrm [turn on chromosomal mutations]\n\t--mix [well mixing]\n\t--q [20 quick simulations]\nOther modes:\n\t--sample [gp sample]\n\t  -N [sample size]\n\t--pg [print genome data]\n\t  -g [genome or genome file] -gs [genomes for comparison]\n\n");
+			printf("\n\033[93m### Patterns --- usage ###\033[0m\nArgument options:\n\t-p [project title]\n\t-s [seed]\n\t-g [initial genome]\n\t-b [backup file]\n\t-a [ancestor file]\n\t-t [max. time]\n\t-tp [target pattern]\n\t-ss [selection strength]\n\t--chrm [turn on chromosomal mutations]\n\t--mix [well mixing]\n\t--q [20 quick simulations]\nOther modes:\n\t--sample [gp sample]\n\t  -N [sample size]\n\t--pg [print genome data]\n\t  -g [genome or genome file] -gs [genomes for comparison]\n\n");
 			exit(1);
 		}
 		

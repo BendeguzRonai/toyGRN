@@ -69,6 +69,9 @@ const double diffusion_rate = 1.;  // >1: multiple Margolus steps per time step,
 const double death_rate = 0.1;
 const int replication_neighbourhood = 3; 
 
+
+extern double selection_strength; // parameter used in the fitness calculation function
+
 //Variables defined in main.cc
 extern int Time;
 extern int initial_seed;
