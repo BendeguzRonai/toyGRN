@@ -48,7 +48,7 @@ const int TimeOutputFossils = 1000000;
 //const bool quickExp = false;
 
 //DNA & Mutations 
-const double point_mut=0.001;
+const double point_mut=0.0001;
 const double del_mut=0.0005;
 const double copy_mut=0.0005;
 const double cut_mut=0.0005;
