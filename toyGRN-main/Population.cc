@@ -185,7 +185,8 @@ void Population::Stats(){
 		}
 	}
 
-	MeanFitness = static_cast<double>(F) / size;
+	if (size != 0)	MeanFitness = static_cast<double>(F) / size;
+	else MeanFitness = 0;
 }
 
 void Population::MargolusDiffusion()	//Based on Brem's function from Evolvabear_V9.0
