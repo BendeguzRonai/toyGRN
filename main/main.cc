@@ -329,15 +329,16 @@ int main(int argc, char** argv) {
                 if(Time%TimePruneFossils==0 && Time!=0)	P->PruneFossilRecord();
                 if (Time%100==0){
                     P->Stats();
-                    if(P->MaxFitness==1) {
-                        //cout << "Time: " << Time <<" Mean fitness: " << P->MeanFitness << " Max fitness: " << P->MaxFitness << " Size: " << P->size << endl;
+					cout << "Time: " << Time <<" Mean fitness: " << P->MeanFitness << " Max fitness: " << P->MaxFitness << " Size: " << P->size << endl;
+                    
+					if(P->MaxFitness==1) {
                         break;
                     }
                 }
-                if (Time%50000==0){
-                    P->Stats();
-                    //cout << "Time: " << Time <<" Mean fitness: " << P->MeanFitness << " Max fitness: " << P->MaxFitness << " Size: " << P->size << endl;
-                } 
+                // if (Time%50000==0){
+                //     P->Stats();
+                //     //cout << "Time: " << Time <<" Mean fitness: " << P->MeanFitness << " Max fitness: " << P->MaxFitness << " Size: " << P->size << endl;
+                // } 
             
                 if (P->size==0) {
                     cout << "Time: " << Time <<" Mean fitness: " << P->MeanFitness << " Max fitness: " << P->MaxFitness << " Size: " << P->size << endl;
@@ -347,8 +348,8 @@ int main(int argc, char** argv) {
                 
             }    
             P->PruneFossilRecord();
-            P->Stats();
-			cout << "Time: " << Time <<" Mean fitness: " << P->MeanFitness << " Max fitness: " << P->MaxFitness << " Size: " << P->size << endl;
+            //P->Stats();
+			//cout << "Time: " << Time <<" Mean fitness: " << P->MeanFitness << " Max fitness: " << P->MaxFitness << " Size: " << P->size << endl;
             delete P;
 	        P = NULL;
         }

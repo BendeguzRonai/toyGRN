@@ -1,4 +1,4 @@
 *.o
-toyGRN-main/main
+main/main
 .vscode/
 test/
