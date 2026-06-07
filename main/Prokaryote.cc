@@ -55,6 +55,7 @@ void Prokaryote::Mutate() {
         if (uniform() < point_mut) {
             (*G)[i] = ((*G)[i] == '1') ? '0' : '1'; 
 			mutant = true;
+			relative_distance = 1.;
 			fitness = 0.;
         }
     }
@@ -63,6 +64,7 @@ void Prokaryote::Mutate() {
 		size_t start_idx = static_cast<size_t>(uniform() * (G->length() - 19)); // Random valid start index
 		(*G).erase(start_idx, 20); // Remove 20 characters
 		mutant = true;
+		relative_distance = 1.;
 		fitness = 0.;
 	}
 	if (uniform() < copy_mut && G->length()<200){
@@ -70,6 +72,7 @@ void Prokaryote::Mutate() {
         std::string copied_segment = G->substr(start_idx, 20);
         *G += copied_segment; // Append the copied segment
         mutant = true;
+		relative_distance = 1.;
         fitness = 0.;
 	}
 	if (uniform() < cut_mut){
@@ -78,6 +81,7 @@ void Prokaryote::Mutate() {
 		*G += cut_segment;
 		(*G).erase(start_idx, 20);
 		mutant = true;
+		relative_distance = 1.;
 		fitness = 0.;
 	}
 }
@@ -95,10 +99,12 @@ void Prokaryote::FitCalc(){
 	if (Ancestor!=NULL && agent->logic_function == Ancestor->agent->logic_function && agent->morphogen_outleak==Ancestor->agent->morphogen_outleak)
 	{	
 		agent = Ancestor->agent;
+		relative_distance = Ancestor->relative_distance;
 		fitness = Ancestor->fitness;
 	}
 	else {
 		agent->PatternFormation();
+		relative_distance = agent->CalculateRelativeDistance();
 		fitness = agent->FitnessCalculation();
 		//agent->Print();
 	}
@@ -151,7 +157,8 @@ void Prokaryote::Clone(Prokaryote* parent, unsigned long long tot_prok_count)
 	G = new string(*parent->G);
 	
 	fossil_id = tot_prok_count;
-	time_of_appearance = Time;	
+	time_of_appearance = Time;
+	relative_distance = parent->relative_distance;	
 	fitness = parent->fitness;
 	agent = parent->agent;
 	
@@ -166,6 +173,7 @@ void Prokaryote::PrintData(bool include_agent_data)
 	if(Ancestor==NULL)	printf("Generation 0\n");
 	else	printf("Child of #%llu\n", Ancestor->fossil_id);
 	printf("Time of birth = %d\n", time_of_appearance);
+	printf("Relative distance = %f\n", relative_distance);
 	printf("Fitness = %f\n", fitness);
 	printf("It is %s.\n", (alive)? "alive":"dead");
 	printf("It is %sa mutant.\n", ((mutant)? "":"not " ));

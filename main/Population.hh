@@ -28,7 +28,8 @@ class Population
 
 		//These are for looking at the occurrence of evolution.
 		
-
+		double MeanDistance;
+		double LeastDistance;
 		double MeanFitness;	//Add noise for a given period of time.
 		double MaxFitness;
 		int size;

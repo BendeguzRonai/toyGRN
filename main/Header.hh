@@ -54,9 +54,9 @@ const double copy_mut=0.0005;
 const double cut_mut=0.0005;
 extern bool chrom; // chormosomal mutations
 
-const bool DiverseInitialPop=true; //Each cell gets its own random genome. false for uniform population w/ 1 random genome
+const bool DiverseInitialPop=false; //Each cell gets its own random genome. false for uniform population w/ 1 random genome
 const int genome_length = 40; //Must be multiple of 20 
-const string genome_init = "";
+extern string genome_init;
 
 //Patterns
 const int tmax = 100; //time
@@ -65,7 +65,7 @@ extern vector<vector<vector<int>>> Patterns;
 //const double base_fitness = 0.15;
 
 //constants for Population.cc
-const double diffusion_rate = 1.;  // >1: multiple Margolus steps per time step, <1: probability of single Margolus step each time step.
+const double diffusion_rate = 0.;  // >1: multiple Margolus steps per time step, <1: probability of single Margolus step each time step.
 const double death_rate = 0.1;
 const int replication_neighbourhood = 3; 
 

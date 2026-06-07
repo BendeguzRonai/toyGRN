@@ -53,6 +53,7 @@ class toyAgent {
     void RegulatoryPhenotype(const ToyPlugin& toy);
     double FitnessCalculation();
     int CalculateHammingDistance();
+    double CalculateRelativeDistance();
 
     void PatternFormation();
     void PrintPattern();

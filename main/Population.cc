@@ -171,22 +171,33 @@ void Population::UpdatePopulation()	//This is the main next-state function.
 
 void Population::Stats(){
 	int i, j;
+	double H = 0.;
 	double F = 0.;
 	size = 0;
+	LeastDistance = 1.;
 	MaxFitness = 0. ; 
 	for(int u=0; u<NR*NC; u++)	
 	{
 		i =u/NC;	//Row index.
 		j = u%NC;	//Column index.
 		if (PPSpace[i][j] != NULL) {
+			H+=PPSpace[i][j]->relative_distance;
 			F+=PPSpace[i][j]->fitness;
 			size++;
+			if (PPSpace[i][j]->relative_distance < LeastDistance) LeastDistance = PPSpace[i][j]->relative_distance;
 			if (PPSpace[i][j]->fitness > MaxFitness) MaxFitness = PPSpace[i][j]->fitness;
 		}
 	}
 
-	if (size != 0)	MeanFitness = static_cast<double>(F) / size;
-	else MeanFitness = 0;
+	if (size != 0)	{
+		MeanDistance = static_cast<double>(H) / size;
+		MeanFitness = static_cast<double>(F) / size;
+	}
+	else {
+		MeanDistance = 0;
+		MeanFitness = 0;
+	}
+		
 }
 
 void Population::MargolusDiffusion()	//Based on Brem's function from Evolvabear_V9.0
