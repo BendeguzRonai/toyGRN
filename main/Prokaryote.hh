@@ -19,6 +19,7 @@ class Prokaryote{
 		string* G;
 		std::shared_ptr<toyAgent> agent;
 		
+		double relative_distance;
 		double fitness;
 
 		//For the fossil record.

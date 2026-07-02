@@ -752,6 +752,18 @@ int toyAgent::CalculateHammingDistance() {
     return H;
 }
 
+double toyAgent::CalculateRelativeDistance() {
+
+    int h_dist;
+
+    h_dist = CalculateHammingDistance();
+
+    if (h_dist!=-1) return static_cast<double>(h_dist) / (ncells * tmax);
+    else return 1.;
+
+}
+
+
 int toyAgent::FunctionToInt(){
 
     std::vector<int> func(8, -1);

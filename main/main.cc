@@ -16,6 +16,7 @@ int initial_seed = time(0);
 bool chrom = false;
 bool PrintGenome = false;
 string gnm = "";
+std::string genome_init = "";
 string genomes[1000000];
 
 unsigned long long seed_draws = 0;
@@ -329,19 +330,19 @@ int main(int argc, char** argv) {
                 if(Time%TimePruneFossils==0 && Time!=0)	P->PruneFossilRecord();
                 if (Time%100==0){
                     P->Stats();
-					cout << "Time: " << Time <<" Mean fitness: " << P->MeanFitness << " Max fitness: " << P->MaxFitness << " Size: " << P->size << endl;
                     
 					if(P->MaxFitness==1) {
-                        break;
+						cout << "Time: " << Time <<" Mean fitness: " << P->MeanFitness << " Max fitness: " << P->MaxFitness << " Mean distance: " << P->MeanDistance << " Least distance: " << P->LeastDistance << " Size: " << P->size << endl;
+						break;
                     }
                 }
-                // if (Time%50000==0){
-                //     P->Stats();
-                //     //cout << "Time: " << Time <<" Mean fitness: " << P->MeanFitness << " Max fitness: " << P->MaxFitness << " Size: " << P->size << endl;
-                // } 
+                if (Time%10000==0){
+                    P->Stats();
+                    cout << "Time: " << Time <<" Mean fitness: " << P->MeanFitness << " Max fitness: " << P->MaxFitness << " Mean distance: " << P->MeanDistance << " Least distance: " << P->LeastDistance << " Size: " << P->size << endl;
+                 } 
             
                 if (P->size==0) {
-                    cout << "Time: " << Time <<" Mean fitness: " << P->MeanFitness << " Max fitness: " << P->MaxFitness << " Size: " << P->size << endl;
+                    cout << "Time: " << Time <<" Mean fitness: " << P->MeanFitness << " Max fitness: " << P->MaxFitness << " Mean distance: " << P->MeanDistance << " Least distance: " << P->LeastDistance << " Size: " << P->size << endl;
                     break;
                 }
                 P->UpdatePopulation();		//Maybe move to main?????
@@ -494,21 +495,19 @@ void Setup(int argc, char** argv) {
 		else if(ReadOut=="-t" && (i+1)!=argc)
 		{
 			SimTime = atoi(argv[i+1]);
-			
 			i++;
 			continue;
 		}
 		else if(ReadOut=="-tp" && (i+1)!=argc)
 		{
 			Target = atoi(argv[i+1]);
-			
 			i++;
 			continue;
 		}
 		else if(ReadOut=="-ss" && (i+1)!=argc)
 		{
 			selection_strength = stod(argv[i+1]);
-			
+			printf("Selection parameter = %f\n", selection_strength);
 			i++;
 			continue;
 		}
@@ -552,7 +551,9 @@ void Setup(int argc, char** argv) {
 		else if(ReadOut=="-g" && (i+1)!=argc)
 		{
 			gnm = argv[i+1];
-			printf("Genome: %s\n", anctrace_reboot.c_str());
+			genome_init = std::string(argv[i+1]);
+			printf("Genome: %s\n", genome_init.c_str());
+			//printf("Genome: %s\n", anctrace_reboot.c_str());
 			i++;
 			continue;
 		}
@@ -593,11 +594,27 @@ void Setup(int argc, char** argv) {
 	if (!project_name_found && mode=="standard")	folder += "You_are_lazy";	
 
 	if (mode=="GPsample")	folder += "GP_Samples";	
-
-	command = "mkdir -p " + folder;
-	int r = system(command.c_str());
-	printf("Folder = %s\n", folder.c_str());
+	
+	if (mode=="quickSim"){
+		
+		printf("NC: %d\n", NC);
+		printf("NR: %d\n", NR);
+		printf("Simulation time: %d\n", SimTime);
+		printf("Mixing: %s\n", (well_mixing)? "yes" : "no");
+		if (!well_mixing) printf("Diffusion rate: %f\n", diffusion_rate);
+		printf("Initial genome size: %d\n", genome_length);
+		printf("Mutation rates (point, delete, copy, cut): %f, %f, %f, %f\n", point_mut, del_mut, copy_mut, cut_mut);
+		printf("Chromosomal mutations: %s\n", (chrom)? "yes" : "no");
+		printf("Target pattern: %d\n", Target);
+		
+	}
+	
 	if (mode=="standard"){
+
+		command = "mkdir -p " + folder;
+		int r = system(command.c_str());
+		printf("Folder = %s\n", folder.c_str());
+
 		//Automatically set up a subdirectory for snapshots of the grid (not images but raw data).
 		command = "mkdir -p " + folder + "/snapsamples";
 		r += system(command.c_str());
